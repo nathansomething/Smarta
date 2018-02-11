@@ -38,11 +38,11 @@
         <div ngbDropdown class="d-inline-block">
           <button class="btn btn-outline-primary" id="data_frequency" ngbDropdownToggle>{{this.dataFrequency}}</button>
           <div ngbDropdownMenu aria-labelledby="data_frequency">
-            <button class="dropdown-item" (click)="this.dataFrequency='Every Hour'">Every Hour</button>
-            <button class="dropdown-item" (click)="this.dataFrequency='Every Other Hour'">Every Other Hour</button>
-            <button class="dropdown-item" (click)="this.dataFrequency='Every 6 Hours'">Every 6 Hours</button>
-            <button class="dropdown-item" (click)="this.dataFrequency='Every 12 Hours'">Every 12 Hours</button>
-            <button class="dropdown-item" (click)="this.dataFrequency='Every 24 Hours'">Every 24 Hours</button>
+            <button class="dropdown-item" (click)="updateDataFrequency('Every Hour')">Every Hour</button>
+            <button class="dropdown-item" (click)="updateDataFrequency('Every Other Hour')">Every Other Hour</button>
+            <button class="dropdown-item" (click)="updateDataFrequency('Every 6 Hours')">Every 6 Hours</button>
+            <button class="dropdown-item" (click)="updateDataFrequency('Every 12 Hours')">Every 12 Hours</button>
+            <button class="dropdown-item" (click)="updateDataFrequency('Every 24 Hours')">Every 24 Hours</button>
           </div>
         </div>
       </div>

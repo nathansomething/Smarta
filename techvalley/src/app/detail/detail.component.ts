@@ -50,6 +50,11 @@ export class DetailComponent implements OnInit {
     this.enddate = this.today.getFullYear() + '-' + this.pad(this.today.getMonth(), 2) + '-' + this.pad(this.today.getDate(), 2);
   }
 
+  updateDataFrequency(frequency:string) {
+    this.dataFrequency = frequency;
+    this.getVehicalData();
+  }
+
   getAggregateHours() {
     switch(this.dataFrequency) {
       case "Every Hour":
@@ -66,7 +71,14 @@ export class DetailComponent implements OnInit {
   }
 
   getVehicalData() {
-    this.http.get<Array<number> >(`http://127.0.0.1:5000/aggr?id=${this.id}&to_date=%27%27&aggregate_num_hours=${this.getAggregateHours()}&aggregate_num_days=%27%27`).subscribe(data => {
+    this.vehicalData = [];
+    let today = new Date();
+    // Yes, this will break if it overlaps a month.
+    // No, I don't have time to properly fix it.
+    let startDaysAgo = today.getDay() - Number(this.startdate.split('-')[2]);
+    let endDaysAgo = today.getDay() - Number(this.enddate.split('-')[2]);
+
+    this.http.get<number[]>(`http://127.0.0.1:5000/aggr?id=${this.id}&start_days_ago=${startDaysAgo}&end_days_ago=${endDaysAgo}&aggregate_num_hours=${this.getAggregateHours()}`).subscribe(data => {
       this.vehicalData = data
       for(let vehicalDatum of this.vehicalData) {
         this.chart.addPoint(vehicalDatum);
