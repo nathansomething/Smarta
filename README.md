@@ -1,7 +1,5 @@
 README
 -------------------------
--------------------------
--------------------------
 This file includes:
 
 1) Description of the Product
@@ -9,14 +7,10 @@ This file includes:
 3) Expected Benefits
 4) Limitations and Further Development
 
--------------------------
------------------------------SMARTA--------------------------------
--------------------- Smart Traffic Analytics v1-----------------------
--------------------------------------------------------------------
+----- SMARTA, Smart Traffic Analytics v1-------
+
 Designed by Nathan Goodman, Ilya Mayzus and Felippe Cronemberger
 February 11th, 2018.
--------------------------------------------------------------------
--------------------------------------------------------------------
 -------------------------------------------------------------------
 
 1) Description
@@ -47,14 +41,3 @@ Users can benefit from the information produced by the application in a variety 
 
 This program could be expanded by increasing the portfolio of metrics as well as the scope of data. A user-friendlier interface that allows for easier comparison across regions could make interface more inviting.
 Algorithms used to retrieve data and load it is still time-consuming(~3 minutes) and could be improved.
-
-
--------------------------------------------------------------------
--------------------------------------------------------------------
--------------------------------------------------------------------
--------------------------------------------------------------------
--------------------------------------------------------------------
--------------------------------------------------------------------
--------------------------------------------------------------------
--------------------------------------------------------------------
-----------------------------------END------------------------------
