@@ -259,8 +259,8 @@ class ApiAdapter():
                     mod_asset_dict['id'] = self.tfevt_id_dict[asset_uid]
                     coordinates_str = asset_dict['coordinates']
                     coord_tokens = coordinates_str.split(':')                     
-                    mod_asset_dict['lat'] = long(coord_tokens[0])
-                    mod_asset_dict['lng'] = long(coord_tokens[1]) 
+                    mod_asset_dict['lat'] = float(coord_tokens[0])
+                    mod_asset_dict['lng'] = float(coord_tokens[1]) 
                     filtered_assets.append(mod_asset_dict)
         return filtered_assets
     
