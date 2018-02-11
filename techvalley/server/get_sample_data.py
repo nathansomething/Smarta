@@ -1,7 +1,9 @@
 import requests
 import simplejson
 import json
-
+import time
+import datetime
+import calendar
 #BASE_URL = 'http://' + HARD_CODED_HOST_NAME
 
 def get_token():
@@ -12,31 +14,57 @@ def get_token():
     print("got token={}".format(api_adapter.token))
 
 def get_results():
+    vehicle_counts = get_vehicle_counts_for_asset_id(2)
+    print(vehicle_counts) 
+    return vehicle_counts
+
+def get_results_filtered_assets():
     json_dict = load_environment('Schenectady')
     api_adapter = ApiAdapter(json_dict)
-    api_adapter.init_token()
+    api_adapter.init_token()    
     all_pages_dict_list = api_adapter.get_all_assets_all_pages()
-    filtered_assets = api_adapter.filter_assets_data(all_pages_dict_list)
-    print(filtered_assets)
-    api_adapter.get_data_for_filtered_assets(filtered_assets)
+    filtered_assets = api_adapter.filter_assets_data(all_pages_dict_list)    
+    single_datapoint = api_adapter.get_data_for_filtered_assets(filtered_assets)
+    print(single_datapoint)
+
+def time_now_as_epoch():
+    today = datetime.datetime.now()
+    epoch_now = (today - datetime.datetime(1970,1,1)).total_seconds()
+    print(epoch_now)
+    
 
 def get_tfevt_assets() :
+    ''' this is exposed as an endpoint in flask
+    '''
     #json_dict = load_environment('Hackathon')
     json_dict = load_environment('Schenectady')
     api_adapter = ApiAdapter(json_dict)
-    api_adapter.init_token()
-    #api_adapter.get_pkin_by_location()
+    api_adapter.init_token()    
     all_pages_dict_list = api_adapter.get_all_assets_all_pages()
     filtered_assets = api_adapter.filter_assets_data(all_pages_dict_list)    
     #api_adapter.get_data_for_filtered_assets(filtered_assets)
     return filtered_assets
     
+def get_vehicle_counts_for_asset_id(userfriendly_id=2):
+    json_dict = load_environment('Schenectady')
+    api_adapter = ApiAdapter(json_dict)
+    api_adapter.init_token()    
+    all_pages_dict_list = api_adapter.get_all_assets_all_pages()
+    filtered_assets = api_adapter.filter_assets_data(all_pages_dict_list)    
+    #asset_id = '385656d5-7a48-4755-a0f7-ef6ce92efe46'
+    #userfriendly_id = api_adapter.tfevt_id_dict[asset_id]
+    asset_id = api_adapter.tfevt_id_reverse_dict[userfriendly_id]
+    #print("userfriendly_id={}, asset_id={}".format(userfriendly_id, asset_id))
+    return api_adapter.get_vehicle_count_from_now(asset_id)
+
     
 def load_environment(type):
     if type == 'Hackathon' :
-        filename = '/Users/ilya/work/GenomeCenterWorkArea/development/hacktechvalley_2018/HackTechValley/Hackathon - DEMO Data.postman_environment.json'
+        #filename = '/Users/ilya/work/GenomeCenterWorkArea/development/hacktechvalley_2018/HackTechValley/Hackathon - DEMO Data.postman_environment.json'
+        filename = 'sample_data_environment/Hackathon - DEMO Data.postman_environment.json'
     elif type == 'Schenectady' :
-        filename = '/Users/ilya/work/GenomeCenterWorkArea/development/hacktechvalley_2018/HackTechValley/Schenectady - Live.postman_environment.json'
+        #filename = '/Users/ilya/work/GenomeCenterWorkArea/development/hacktechvalley_2018/HackTechValley/Schenectady - Live.postman_environment.json'
+        filename = 'sample_data_environment/Schenectady - Live.postman_environment.json'
     else :
         raise ValueError("type={}".format(type))
     
@@ -62,6 +90,7 @@ class ApiAdapter():
         self.json_dict = json_dict
         self.current_token = None
         self.tfevt_id_dict = {}
+        self.tfevt_id_reverse_dict = {}
         self.tfevt_id_list = []
     
     def init_token(self):
@@ -98,25 +127,43 @@ class ApiAdapter():
         
         print(response.text)
 
-
-    def get_tfevt_by_asset_id(self, asset_id):
-        #TODO: get asset_id -- in this case, it is hard-coded as CAM-HYP1071-F
+    def get_tfevt_by_asset_id_from_now(self, asset_id):
+        print("asset_id={}".format(asset_id))
+        today = datetime.datetime.now()
+        one_period = datetime.timedelta(minutes=1)
+        x_periods = 60
+        x_periods_ago = today - (x_periods * one_period)
+        
+        epoch_x_periods = (x_periods_ago - datetime.datetime(1970,1,1)).total_seconds() * 1000
+        epoch_now = (today - datetime.datetime(1970,1,1)).total_seconds() * 1000
+        epoch_x_periods = long(round(epoch_x_periods))
+        epoch_now = long(round(epoch_now))
+        #detailed_data_str = self.get_tfevt_by_asset_id(asset_id, epoch_one_days, epoch_now)
+        start_time = epoch_x_periods
+        end_time = epoch_now
+        #start_time="1517673396000"
+        #end_time="1518191796000"
+        return self.get_tfevt_by_asset_id(asset_id, start_time, end_time)
+        
+    #def get_tfevt_by_asset_id(self, asset_id, start_time="1517673396000", end_time="1518191796000"):
+    def get_tfevt_by_asset_id(self, asset_id, start_time, end_time):
+        print("start_time={}, end_time={}".format(start_time, end_time))
         event_url = lookup_value(self.json_dict, 'eventurl')
         #https://ic-event-service.run.aws-usw02-pr.ice.predix.io/v2
         #url = "https://ic-event-service.run.aws-usw02-pr.ice.predix.io/v2/assets/CAM-HYP1071-F/events"
         url = "{}/assets/{}/events".format(event_url, asset_id)
-        querystring = {"eventType":"TFEVT","startTime":"1517673396000","endTime":"1518191796000"}
-        
+        querystring = {"eventType":"TFEVT","startTime":start_time,"endTime":end_time}
+        #TODO: replace Authorization with token from init_token
         headers = {
             'Authorization': "Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6ImxlZ2FjeS10b2tlbi1rZXkiLCJ0eXAiOiJKV1QifQ.eyJqdGkiOiIyMDk1NTAzOGRkODQ0ZTc4OGUwZTUwM2ZjNTcxZTAzMSIsInN1YiI6InNjaC5oYWNrYXRob24iLCJzY29wZSI6WyJ1YWEucmVzb3VyY2UiLCJpZS1jdXJyZW50LlNjaGVuZWN0YWR5LUlFLVBFREVTVFJJQU4uSUUtUEVERVNUUklBTi5GUkVFLkRFVkVMT1AiLCJpZS1jdXJyZW50LlNjaGVuZWN0YWR5LUlFLVBBUktJTkcuSUUtUEFSS0lORy5GUkVFLkRFVkVMT1AiLCJpZS1jdXJyZW50LlNjaGVuZWN0YWR5LUlFLVBVQkxJQy1TQUZFVFkuSUUtUFVCTElDLVNBRkVUWS5GUkVFLkRFVkVMT1AiLCJpZS1jdXJyZW50LlNjaGVuZWN0YWR5LUlFLVRSQUZGSUMuSUUtVFJBRkZJQy5GUkVFLkRFVkVMT1AiLCJpZS1jdXJyZW50LlNjaGVuZWN0YWR5LUlFLUVOVklST05NRU5UQUwuSUUtRU5WSVJPTk1FTlRBTC5GUkVFLkRFVkVMT1AiXSwiY2xpZW50X2lkIjoic2NoLmhhY2thdGhvbiIsImNpZCI6InNjaC5oYWNrYXRob24iLCJhenAiOiJzY2guaGFja2F0aG9uIiwiZ3JhbnRfdHlwZSI6ImNsaWVudF9jcmVkZW50aWFscyIsInJldl9zaWciOiI4YTZkMzIwNyIsImlhdCI6MTUxODMxNTQ5MSwiZXhwIjoxNTE4OTIwMjkxLCJpc3MiOiJodHRwczovLzg5MDQwN2Q3LWU2MTctNGQ3MC05ODVmLTAxNzkyZDY5MzM4Ny5wcmVkaXgtdWFhLnJ1bi5hd3MtdXN3MDItcHIuaWNlLnByZWRpeC5pby9vYXV0aC90b2tlbiIsInppZCI6Ijg5MDQwN2Q3LWU2MTctNGQ3MC05ODVmLTAxNzkyZDY5MzM4NyIsImF1ZCI6WyJpZS1jdXJyZW50LlNjaGVuZWN0YWR5LUlFLVBVQkxJQy1TQUZFVFkuSUUtUFVCTElDLVNBRkVUWS5GUkVFIiwidWFhIiwic2NoLmhhY2thdGhvbiIsImllLWN1cnJlbnQuU2NoZW5lY3RhZHktSUUtUEVERVNUUklBTi5JRS1QRURFU1RSSUFOLkZSRUUiLCJpZS1jdXJyZW50LlNjaGVuZWN0YWR5LUlFLUVOVklST05NRU5UQUwuSUUtRU5WSVJPTk1FTlRBTC5GUkVFIiwiaWUtY3VycmVudC5TY2hlbmVjdGFkeS1JRS1QQVJLSU5HLklFLVBBUktJTkcuRlJFRSIsImllLWN1cnJlbnQuU2NoZW5lY3RhZHktSUUtVFJBRkZJQy5JRS1UUkFGRklDLkZSRUUiXX0.eAWv2tHgurYasQrrSu3cRhCEtqzlwgLsmmUak6OS1fKpsj2vJNZ7hFAt7-1_AteCNwZAkSMiKJ7v8p0AQvIIotFgQ_UZd9o5xRT5pfYxvs9prMxO7GbC3xeSA_FetaIdeckYQ7PZaiFqQAtzp69z-94jrkVSD_y4BVqyaYvUOR9tLC4iQBrCfShtYltzA1nI-_ouT62KlD5r0Cq9L8e1pB3Er4EhAlX42m8An1usWCOG7coXq0FAUb7ZtEqQVny-OPpaIcd_3N0ZDObLqn7q5kjoET-dhK52EhQkZwY7u2-jtgCnWbsoew1hjp0CTfFjB3Bs-j-3v_r33sIAwQymfQ",
             'Predix-Zone-Id': "Schenectady-IE-TRAFFIC",
             'Cache-Control': "no-cache",
-            'Postman-Token': "30108cab-4557-4311-2c6c-271f48fa71bb"
-            }
+            'Postman-Token': "daa5222a-387a-6118-650f-a46f01ac41da"
+        }
         
         response = requests.request("GET", url, headers=headers, params=querystring)
-    
         print(response.text)
+        return response.text
 
     
 
@@ -208,6 +255,7 @@ class ApiAdapter():
                     if self.tfevt_id_dict.get(asset_uid) is None :
                         self.tfevt_id_list.append(asset_uid)
                         self.tfevt_id_dict[asset_uid] = len(self.tfevt_id_list)
+                        self.tfevt_id_reverse_dict[len(self.tfevt_id_list)] = asset_uid 
                     mod_asset_dict['id'] = self.tfevt_id_dict[asset_uid]
                     coordinates_str = asset_dict['coordinates']
                     coord_tokens = coordinates_str.split(':')                     
@@ -216,17 +264,156 @@ class ApiAdapter():
                     filtered_assets.append(mod_asset_dict)
         return filtered_assets
     
-    def get_data_for_filtered_assets(self, filtered_assets):
-        max_num = 3
-        for i, asset_dict in enumerate(filtered_assets) :
-            asset_id = asset_dict['assetUid']
-            event_type = asset_dict['eventTypes']
-            asset_coordinates = asset_dict['coordinates']
-            self.get_tfevt_by_asset_id(asset_id)
-            if i > max_num :
-                print("breaking after {}".format(i))
-                break
     
+    def parse_single_tfevt_data(self, detailed_data_dict):
+        print(detailed_data_dict.keys())
+        content_list = detailed_data_dict['content']
+        print("len(content_list)={}".format(len(content_list)))
+        for content_item in content_list :
+            #print(content_item['eventType']) #always TFEVT
+            #print(content_item)
+            measures_data = content_item['measures']
+            print("timestamp={}, vehicle_count={}, counter_count={}".format(content_item['timestamp'], measures_data['vehicleCount'], measures_data['counter_direction_vehicleCount']))
+            #print(content_item['properties'])
+        
+    '''
+    #doesn't work because 1 day or 7 days is too much
+    def test_get_detailed_data1(self):
+        asset_id = '385656d5-7a48-4755-a0f7-ef6ce92efe46'
+        #time_now = time.time()
+        #(datetime.datetime(2012,04,01,0,0) - datetime.datetime(1970,1,1)).total_seconds()
+        ###data_now = datetime.datetime.now()
+        ###datetime.datetime(2018, 2, 10, 23, 45, 43, 108666)
+        ###time.mktime(data_now.timetuple())
+        ###1518324463.0
+        #calendar.timegm(time.gmtime())
+        #1518324858
+        
+        #today = datetime.date.today()
+        #today = datetime.datetime.now()
+        #one_day = datetime.timedelta(days=1)
+        #one_days_ago = today - (1 * one_day)
+        #epoch_one_days = (one_days_ago - datetime.datetime(1970,1,1)).total_seconds()
+        #epoch_now = (today - datetime.datetime(1970,1,1)).total_seconds()
+        #epoch_one_days = long(round(epoch_one_days))
+        #epoch_now = long(round(epoch_now))
+        #detailed_data_str = self.get_tfevt_by_asset_id(asset_id, epoch_one_days, epoch_now)
+        
+        #start_time="1517673396000"
+        #end_time="1518191796000"
+        interval1 = 1518191796000 - 1517673396000
+        start_time =  1517673396000 - interval1
+        end_time =  1517673396000
+        detailed_data_str = self.get_tfevt_by_asset_id(asset_id, start_time, end_time)
+        print(detailed_data_str)
+        detailed_data_dict = json.loads(detailed_data_str)
+        #print("found first valid data, asset_id={}, data={}".format(asset_id, detailed_data_dict))
+        content_data = detailed_data_dict['content']
+        print(len(content_data))
+
+    #works with intervals
+    def test_get_detailed_data2(self):
+        asset_id = '385656d5-7a48-4755-a0f7-ef6ce92efe46'
+        start_time=1517673396000
+        end_time=1518191796000
+        interval1 = 1518191796000 - 1517673396000
+        #start_time =  1517673396000 - interval1
+        #end_time =  1517673396000
+        detailed_data_str = self.get_tfevt_by_asset_id(asset_id, start_time, end_time)
+        print(detailed_data_str)
+        detailed_data_dict = json.loads(detailed_data_str)
+        #print("found first valid data, asset_id={}, data={}".format(asset_id, detailed_data_dict))
+        content_data = detailed_data_dict['content']
+        #print(len(content_data))
+        self.get_vehicle_count_per_slice(content_data)
+    '''     
+    
+    
+    def test_get_detailed_data(self):
+        asset_id = '385656d5-7a48-4755-a0f7-ef6ce92efe46'
+        '''
+        today = datetime.datetime.now()
+        #one_second = datetime.timedelta(seconds=1)
+        #one_day = datetime.timedelta(days=1)
+        one_period = datetime.timedelta(minutes=1)
+        x_periods = 60
+        x_periods_ago = today - (x_periods * one_period)        
+        epoch_x_periods = (x_periods_ago - datetime.datetime(1970,1,1)).total_seconds() * 1000
+        epoch_now = (today - datetime.datetime(1970,1,1)).total_seconds() * 1000
+        epoch_seven_days = long(round(epoch_x_periods))
+        epoch_now = long(round(epoch_now))
+        #detailed_data_str = self.get_tfevt_by_asset_id(asset_id, epoch_one_days, epoch_now)
+        start_time = epoch_seven_days
+        end_time = epoch_now 
+        detailed_data_str = self.get_tfevt_by_asset_id(asset_id, start_time, end_time)
+        print(detailed_data_str)
+        detailed_data_dict = json.loads(detailed_data_str)
+        #print("found first valid data, asset_id={}, data={}".format(asset_id, detailed_data_dict))
+        content_data = detailed_data_dict['content']
+        print(len(content_data))
+        self.get_vehicle_count_per_slice(content_data)
+        '''
+        vehicle_counts = self.get_vehicle_count_from_now(asset_id)
+        print(vehicle_counts)
+
+    def get_vehicle_count_from_now(self, asset_id, n_hours=24):        
+        vehicle_counts = []
+        today = datetime.datetime.now()
+        #start_time is same as today
+        (vehicle_count, start_time, end_time) = self.get_vehicle_count(asset_id, today)
+        #print("vehicle_count={}, start_time={}, end_time={}".format(vehicle_count, start_time, end_time))
+        
+        vehicle_counts.append(vehicle_count)
+        for i in range(0, n_hours) :
+            (vehicle_count, start_time, end_time) = self.get_vehicle_count(asset_id, end_time)
+            #print("vehicle_count={}, start_time={}, end_time={}".format(vehicle_count, start_time, end_time))
+            vehicle_counts.append(vehicle_count)
+        return vehicle_counts
+    def get_vehicle_count(self, asset_id, today):
+        one_period = datetime.timedelta(minutes=1)
+        x_periods = 60
+        x_periods_ago = today - (x_periods * one_period)
+        
+        epoch_x_periods = (x_periods_ago - datetime.datetime(1970,1,1)).total_seconds() * 1000
+        epoch_now = (today - datetime.datetime(1970,1,1)).total_seconds() * 1000
+        epoch_x_periods = long(round(epoch_x_periods))
+        epoch_now = long(round(epoch_now))
+        #detailed_data_str = self.get_tfevt_by_asset_id(asset_id, epoch_one_days, epoch_now)
+        start_time = epoch_x_periods
+        end_time = epoch_now 
+        detailed_data_str = self.get_tfevt_by_asset_id(asset_id, start_time, end_time)
+        print(detailed_data_str)
+        detailed_data_dict = json.loads(detailed_data_str)
+        content_data = detailed_data_dict['content']
+        print(len(content_data))
+        vehicle_count = self.get_vehicle_count_per_slice(content_data)
+        return (vehicle_count, today, x_periods_ago)
+
+    def get_vehicle_count_per_slice(self, content_data):
+        #measures_data['vehicleCount'], measures_data['counter_direction_vehicleCount']
+        vehicle_counts = [content_item['measures']['vehicleCount'] for content_item in content_data]
+        vehicle_sum = sum(vehicle_counts)
+        print(vehicle_counts)
+        print(vehicle_sum)
+        return (vehicle_sum)
+        
+    
+    def get_data_for_filtered_assets(self, filtered_assets):
+        for i, asset_dict in enumerate(filtered_assets) :
+            userfriendly_id = asset_dict['id']
+            asset_id = self.tfevt_id_reverse_dict[userfriendly_id]            
+            #latitude = asset_dict['lat']
+            #longtitude = asset_dict['lng']
+            detailed_data_str = self.get_tfevt_by_asset_id_from_now(asset_id)
+            if(detailed_data_str is None or len(detailed_data_str) == 0) :
+                print("empty data")
+            else :
+                print(detailed_data_str)
+                detailed_data_dict = json.loads(detailed_data_str)
+                if len(detailed_data_dict['content']) > 0 :
+                    print("found first valid data, asset_id={}, data={}".format(asset_id, detailed_data_dict))
+                    print("userfriendly_id={}".format(self.tfevt_id_dict[asset_id]))
+                    return detailed_data_dict
     
     def get_all_locations(self):
         url = "https://ic-metadata-service.run.aws-usw02-pr.ice.predix.io/v2/metadata/locations/search"
