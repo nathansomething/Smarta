@@ -8,10 +8,12 @@ import { AboutComponent } from './about/about.component';
 import { MapComponent } from './map/map.component';
 import { DetailComponent } from './detail/detail.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { AgmCoreModule } from '@agm/core';
 
 const appRoutes: Routes = [
+  { path: '', component: AboutComponent },
   { path: 'map', component: MapComponent },
-  { path: 'detail/:id', component: DetailComponent},
+  { path: 'detail/:id', component: DetailComponent },
   { path: '**', component: PageNotFoundComponent }
 ];
 
@@ -28,6 +30,9 @@ const appRoutes: Routes = [
       appRoutes,
       { enableTracing: true } // <-- debugging purposes only
     ),
+    AgmCoreModule.forRoot({
+      apiKey: ' AIzaSyBVuKP2hYQXrJx0m5LEZ4aQOZYl8PxccUM'
+    }),
     BrowserModule,
     FormsModule,
     HttpModule
