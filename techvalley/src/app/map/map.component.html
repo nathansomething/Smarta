@@ -1,4 +1,26 @@
-<p>
-  map works!
-</p>
-<router-outlet></router-outlet>
+<!-- this creates a google map on the page with the given lat/lng from -->
+<!-- the component as the initial center of the map: -->
+<div>
+  <section>
+    <div [style.background-color]="'#999'"><h2>Visible Datapoints</h2></div>
+    <div class="point"><p>Point 1</p></div>
+    <div class="point"><p>Point 2</p></div>
+    <div class="point"><p>Point 3</p></div>
+    <div class="point"><p>Point 4</p></div>
+    <div class="point"><p>Point 5</p></div>
+    <div class="point"><p>Point 6</p></div>
+    <div class="point"><p>Point 7</p></div>
+    <div class="point"><p>Point 8</p></div>
+    <div class="point"><p>Point 9</p></div>
+    <div class="point"><p>Point 10</p></div>
+  </section>
+  <div id="map_header">
+    <h2>Click on a Datapoint Below</h2>
+  </div>
+  <agm-map [latitude]="lat" [longitude]="lng" (mapClick)="mapClicked($event)">
+    <agm-marker [latitude]="lat" [longitude]="lng" (markerClick)="markerClicked($event)">
+    </agm-marker>
+    <!-- <agm-circle [latitude]="lat + 0.3" [longitude]="lng" [radius]="5000" [fillColor]="'red'"
+    [circleDraggable]="false" [editable]="false"></agm-circle> -->
+  </agm-map>
+</div>
