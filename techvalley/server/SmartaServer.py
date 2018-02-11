@@ -9,7 +9,7 @@ api = Api(app)
 class SmartaSampleData(Resource):
     
     def get(self):
-        return get_sample_data.get_tfevt_assets()
+        return get_sample_data.get_tfevt_assets(), {'Access-Control-Allow-Origin': '*'}
 
 class SmartaDataForAssetId(Resource):
 
@@ -32,7 +32,7 @@ class SmartaDataForAssetId(Resource):
         else :
             aggregate_num_days = int(aggregate_num_days)
             
-        return get_sample_data.get_vehicle_counts_for_asset_id(userfriendly_id, to_date, aggregate_num_hours, aggregate_num_days)
+        return get_sample_data.get_vehicle_counts_for_asset_id(userfriendly_id, to_date, aggregate_num_hours, aggregate_num_days), {'Access-Control-Allow-Origin': '*'}
     
     '''
     def get(self, userfriendly_id):
