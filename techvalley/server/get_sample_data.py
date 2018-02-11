@@ -5,6 +5,7 @@ import time
 import datetime
 import calendar
 import itertools
+
 #BASE_URL = 'http://' + HARD_CODED_HOST_NAME
 
 def get_token():
@@ -47,7 +48,8 @@ def get_tfevt_assets() :
     #api_adapter.get_data_for_filtered_assets(filtered_assets)
     return filtered_assets
     
-def get_vehicle_counts_for_asset_id(userfriendly_id=2, to_date='2018-2-9', aggregate_num_hours=None, aggregate_num_days=1):
+#def get_vehicle_counts_for_asset_id(userfriendly_id=2, to_date='2018-2-9', aggregate_num_hours=None, aggregate_num_days=1):
+def get_vehicle_counts_for_asset_id(userfriendly_id, start_days_ago=1, end_days_ago=2, aggregate_num_hours=1, aggregate_num_days=None):
     ''' this is exposed as an endpoint in flask
     '''    
     json_dict = load_environment('Schenectady')
@@ -65,7 +67,7 @@ def get_vehicle_counts_for_asset_id(userfriendly_id=2, to_date='2018-2-9', aggre
     #print("userfriendly_id={}, asset_id={}".format(userfriendly_id, asset_id))
     #return api_adapter.get_vehicle_count_from_now(asset_id)
     #return api_adapter.get_vehicle_count_from_now_to(asset_id, to_date=None, aggregate_num_hours=3, aggregate_num_days=None)
-    return api_adapter.get_vehicle_count_from_now_to(asset_id, to_date, aggregate_num_hours, aggregate_num_days)
+    return api_adapter.get_vehicle_count_from_now_to(asset_id, start_days_ago, end_days_ago, aggregate_num_hours, aggregate_num_days)
 
     
 def load_environment(type):
@@ -369,38 +371,37 @@ class ApiAdapter():
             vehicle_counts.append(vehicle_count)
         return vehicle_counts
 
-    def get_vehicle_count_from_now_to(self, asset_id, to_date, aggregate_num_hours, aggregate_num_days):        
+    def get_vehicle_count_from_now_to(self, asset_id, start_days_ago, end_days_ago, aggregate_num_hours, aggregate_num_days):        
         vehicle_counts = []
         today = datetime.datetime.now()
+        one_period = datetime.timedelta(days=1)
+        x_periods = start_days_ago
+        start_date_user = today - (x_periods * one_period)
+        x_periods = end_days_ago
+        end_date_user = today - (x_periods * one_period)
         #start_time is same as today
         #(vehicle_count, start_time, end_time) = self.get_vehicle_count(asset_id, today)
         #print("vehicle_count={}, start_time={}, end_time={}".format(vehicle_count, start_time, end_time))
-        
-        #vehicle_counts.append(vehicle_count)
-        if to_date is not None :
-            from dateutil import parser
-            to_date_val = parser.parse(to_date)
-            diff = today - to_date_val
-            days = diff.days 
-            seconds = diff.seconds
-            hours = days * 24 + seconds // 3600
-            #minutes = (seconds % 3600) // 60
-            #seconds = seconds % 60
-            n_hours = hours
-        else :
-            n_hours = 24 * 1
+        diff = start_date_user - end_date_user
+    
+        days = diff.days 
+        seconds = diff.seconds
+        hours = days * 24 + seconds // 3600
+        #minutes = (seconds % 3600) // 60
+        #seconds = seconds % 60
+        n_hours = hours
         
         if aggregate_num_days is not None :
             prev_midnight = self.get_time_to_yesterday(today)
         else :
             prev_midnight = None
         
-        end_time = today
+        end_time = start_date_user
         
         vehicle_counts_till_yesteray = []
         vehicle_counts_after_yesterday = []
         for i in range(0, n_hours) :
-            (vehicle_count, start_time, end_time) = self.get_vehicle_count(asset_id, end_time)
+            (vehicle_count, _start_time, end_time) = self.get_vehicle_count(asset_id, end_time)
             #print("vehicle_count={}, start_time={}, end_time={}".format(vehicle_count, start_time, end_time))
             print("i={}, vehicle_count={}".format(i, vehicle_count))
             if aggregate_num_days is not None and prev_midnight is not None:
