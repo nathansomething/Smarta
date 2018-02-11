@@ -47,7 +47,7 @@ def get_tfevt_assets() :
     #api_adapter.get_data_for_filtered_assets(filtered_assets)
     return filtered_assets
     
-def get_vehicle_counts_for_asset_id(userfriendly_id=2, to_date=None, aggregate_num_hours=None, aggregate_num_days=1):
+def get_vehicle_counts_for_asset_id(userfriendly_id=2, to_date='2018-2-9', aggregate_num_hours=None, aggregate_num_days=1):
     ''' this is exposed as an endpoint in flask
     '''    
     json_dict = load_environment('Schenectady')
@@ -377,7 +377,18 @@ class ApiAdapter():
         #print("vehicle_count={}, start_time={}, end_time={}".format(vehicle_count, start_time, end_time))
         
         #vehicle_counts.append(vehicle_count)
-        n_hours = 24 * 3
+        if to_date is not None :
+            from dateutil import parser
+            to_date_val = parser.parse(to_date)
+            diff = today - to_date_val
+            days = diff.days 
+            seconds = diff.seconds
+            hours = days * 24 + seconds // 3600
+            #minutes = (seconds % 3600) // 60
+            #seconds = seconds % 60
+            n_hours = hours
+        else :
+            n_hours = 24 * 1
         
         if aggregate_num_days is not None :
             prev_midnight = self.get_time_to_yesterday(today)
