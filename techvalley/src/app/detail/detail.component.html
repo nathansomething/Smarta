@@ -7,7 +7,7 @@
         <div class="input-group-prepend">
           <div class="input-group-text">Start Date</div>
         </div>
-        <input class="form-control" placeholder="yyyy-mm-dd"
+        <input class="form-control" [placeholder]="startdate"
                name="dp" [(ngModel)]="startdate" ngbDatepicker #d1="ngbDatepicker">
         <div class="input-group-append">
           <button class="btn btn-outline-secondary" (click)="d1.toggle()" type="button">
@@ -21,7 +21,7 @@
         <div class="input-group-prepend">
           <div class="input-group-text">End Date</div>
         </div>
-        <input class="form-control" placeholder="yyyy-mm-dd"
+        <input class="form-control" [placeholder]="enddate"
                name="dp" [(ngModel)]="enddate" ngbDatepicker #d2="ngbDatepicker">
         <div class="input-group-append">
           <button class="btn btn-outline-secondary" (click)="d2.toggle()" type="button">
