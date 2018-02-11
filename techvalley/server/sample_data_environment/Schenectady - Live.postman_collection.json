@@ -1,0 +1,813 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Schenectady - Live.postman_collection",
+		"_postman_id": "691d5011-2dbc-1767-0f9c-07c246fea9c6",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Events",
+			"description": "",
+			"item": [
+				{
+					"name": "Get TFEVT by assetId",
+					"request": {
+						"url": {
+							"raw": "{{eventurl}}/assets/{{traffic_asset}}/events?eventType=TFEVT&startTime={{startts}}&endTime={{endts}}",
+							"host": [
+								"{{eventurl}}"
+							],
+							"path": [
+								"assets",
+								"{{traffic_asset}}",
+								"events"
+							],
+							"query": [
+								{
+									"key": "eventType",
+									"value": "TFEVT",
+									"equals": true
+								},
+								{
+									"key": "startTime",
+									"value": "{{startts}}",
+									"equals": true
+								},
+								{
+									"key": "endTime",
+									"value": "{{endts}}",
+									"equals": true
+								}
+							],
+							"variable": []
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{client_token}}"
+							},
+							{
+								"key": "Predix-Zone-Id",
+								"value": "{{traffic_zone_id}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get TFEVT by locationId",
+					"request": {
+						"url": {
+							"raw": "{{eventurl}}/locations/{{traffic_loc}}/events?eventType=TFEVT&startTime={{startts}}&endTime={{endts}}",
+							"host": [
+								"{{eventurl}}"
+							],
+							"path": [
+								"locations",
+								"{{traffic_loc}}",
+								"events"
+							],
+							"query": [
+								{
+									"key": "eventType",
+									"value": "TFEVT",
+									"equals": true
+								},
+								{
+									"key": "startTime",
+									"value": "{{startts}}",
+									"equals": true
+								},
+								{
+									"key": "endTime",
+									"value": "{{endts}}",
+									"equals": true
+								}
+							],
+							"variable": []
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{client_token}}"
+							},
+							{
+								"key": "Predix-Zone-Id",
+								"value": "{{traffic_zone_id}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get TFEVT by bbox",
+					"request": {
+						"url": {
+							"raw": "{{eventurl}}/locations/events?eventType=TFEVT&bbox={{bbox}}&locationType=TRAFFIC_LANE&startTime={{startts}}&endTime={{endts}}",
+							"host": [
+								"{{eventurl}}"
+							],
+							"path": [
+								"locations",
+								"events"
+							],
+							"query": [
+								{
+									"key": "eventType",
+									"value": "TFEVT",
+									"equals": true
+								},
+								{
+									"key": "bbox",
+									"value": "{{bbox}}",
+									"equals": true
+								},
+								{
+									"key": "locationType",
+									"value": "TRAFFIC_LANE",
+									"equals": true
+								},
+								{
+									"key": "startTime",
+									"value": "{{startts}}",
+									"equals": true
+								},
+								{
+									"key": "endTime",
+									"value": "{{endts}}",
+									"equals": true
+								}
+							],
+							"variable": []
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{client_token}}"
+							},
+							{
+								"key": "Predix-Zone-Id",
+								"value": "{{traffic_zone_id}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Media",
+			"description": "",
+			"item": [
+				{
+					"name": "Get Image mediaOnDemand Asset",
+					"request": {
+						"url": {
+							"raw": "{{mediaurl}}/ondemand/assets/{{traffic_asset}}/media?mediaType=IMAGE&timestamp={{startts}}",
+							"host": [
+								"{{mediaurl}}"
+							],
+							"path": [
+								"ondemand",
+								"assets",
+								"{{traffic_asset}}",
+								"media"
+							],
+							"query": [
+								{
+									"key": "mediaType",
+									"value": "IMAGE",
+									"equals": true
+								},
+								{
+									"key": "timestamp",
+									"value": "{{startts}}",
+									"equals": true
+								}
+							],
+							"variable": []
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{client_token}}"
+							},
+							{
+								"key": "Predix-Zone-Id",
+								"value": "{{ps_zone_id}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get Image mediaOnDemand Location",
+					"request": {
+						"url": {
+							"raw": "{{mediaurl}}/ondemand/locations/{{traffic_loc}} /media?mediaType=IMAGE&timestamp={{startts}}",
+							"host": [
+								"{{mediaurl}}"
+							],
+							"path": [
+								"ondemand",
+								"locations",
+								"{{traffic_loc}} ",
+								"media"
+							],
+							"query": [
+								{
+									"key": "mediaType",
+									"value": "IMAGE",
+									"equals": true
+								},
+								{
+									"key": "timestamp",
+									"value": "{{startts}}",
+									"equals": true
+								}
+							],
+							"variable": []
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{client_token}}"
+							},
+							{
+								"key": "Predix-Zone-Id",
+								"value": "{{ps_zone_id}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get Video mediaOnDemand Asset",
+					"request": {
+						"url": {
+							"raw": "{{mediaurl}}/ondemand/assets/{{ps_asset}}/media?mediaType=VIDEO&timestamp={{startts}}",
+							"host": [
+								"{{mediaurl}}"
+							],
+							"path": [
+								"ondemand",
+								"assets",
+								"{{ps_asset}}",
+								"media"
+							],
+							"query": [
+								{
+									"key": "mediaType",
+									"value": "VIDEO",
+									"equals": true
+								},
+								{
+									"key": "timestamp",
+									"value": "{{startts}}",
+									"equals": true
+								}
+							],
+							"variable": []
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{client_token}}"
+							},
+							{
+								"key": "Predix-Zone-Id",
+								"value": "{{ps_zone_id}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get Video mediaOnDemand Location",
+					"request": {
+						"url": {
+							"raw": "{{mediaurl}}/ondemand/locations/{{traffic_loc}} /media?mediaType=VIDEO&timestamp={{startts}}",
+							"host": [
+								"{{mediaurl}}"
+							],
+							"path": [
+								"ondemand",
+								"locations",
+								"{{traffic_loc}} ",
+								"media"
+							],
+							"query": [
+								{
+									"key": "mediaType",
+									"value": "VIDEO",
+									"equals": true
+								},
+								{
+									"key": "timestamp",
+									"value": "{{startts}}",
+									"equals": true
+								}
+							],
+							"variable": []
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{client_token}}"
+							},
+							{
+								"key": "Predix-Zone-Id",
+								"value": "{{ps_zone_id}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get Audio mediaOnDemand Asset",
+					"request": {
+						"url": {
+							"raw": "{{mediaurl}}/ondemand/assets/{{ps_asset}}/media?mediaType=AUDIO&timestamp={{startts}}",
+							"host": [
+								"{{mediaurl}}"
+							],
+							"path": [
+								"ondemand",
+								"assets",
+								"{{ps_asset}}",
+								"media"
+							],
+							"query": [
+								{
+									"key": "mediaType",
+									"value": "AUDIO",
+									"equals": true
+								},
+								{
+									"key": "timestamp",
+									"value": "{{startts}}",
+									"equals": true
+								}
+							],
+							"variable": []
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{client_token}}"
+							},
+							{
+								"key": "Predix-Zone-Id",
+								"value": "{{ps_zone_id}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get Audio mediaOnDemand Location",
+					"request": {
+						"url": {
+							"raw": "{{mediaurl}}/ondemand/locations/{{traffic_loc}} /media?mediaType=AUDIO&timestamp={{startts}}",
+							"host": [
+								"{{mediaurl}}"
+							],
+							"path": [
+								"ondemand",
+								"locations",
+								"{{traffic_loc}} ",
+								"media"
+							],
+							"query": [
+								{
+									"key": "mediaType",
+									"value": "AUDIO",
+									"equals": true
+								},
+								{
+									"key": "timestamp",
+									"value": "{{startts}}",
+									"equals": true
+								}
+							],
+							"variable": []
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{client_token}}"
+							},
+							{
+								"key": "Predix-Zone-Id",
+								"value": "{{ps_zone_id}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "After getMedia (step 2) -paste pollUrl here",
+					"request": {
+						"url": "###     PASTE  pollUrl  here   ###",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{client_token}}"
+							},
+							{
+								"key": "Predix-Zone-Id",
+								"value": "{{ps_zone_id}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "After step 2 (step 3) -paste url here (do send & download)",
+					"request": {
+						"url": "###     PASTE  url  here   ###",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{client_token}}"
+							},
+							{
+								"key": "Predix-Zone-Id",
+								"value": "{{ps_zone_id}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Metadata",
+			"description": "",
+			"item": [
+				{
+					"name": "Get All Assets",
+					"request": {
+						"url": {
+							"raw": "{{metadataurl}}/assets/search?bbox={{bbox}}&page=0&size=200&q=assetType:CAMERA",
+							"host": [
+								"{{metadataurl}}"
+							],
+							"path": [
+								"assets",
+								"search"
+							],
+							"query": [
+								{
+									"key": "bbox",
+									"value": "{{bbox}}",
+									"equals": true
+								},
+								{
+									"key": "page",
+									"value": "0",
+									"equals": true
+								},
+								{
+									"key": "size",
+									"value": "200",
+									"equals": true
+								},
+								{
+									"key": "q",
+									"value": "assetType:CAMERA",
+									"equals": true
+								}
+							],
+							"variable": []
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{client_token}}"
+							},
+							{
+								"key": "Predix-Zone-Id",
+								"value": "{{traffic_zone_id}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Locations",
+					"request": {
+						"url": {
+							"raw": "{{metadataurl}}/locations/search?q=locationType:TRAFFIC_LANE&bbox={{bbox}}&page=0&size=50",
+							"host": [
+								"{{metadataurl}}"
+							],
+							"path": [
+								"locations",
+								"search"
+							],
+							"query": [
+								{
+									"key": "q",
+									"value": "locationType:TRAFFIC_LANE",
+									"equals": true
+								},
+								{
+									"key": "bbox",
+									"value": "{{bbox}}",
+									"equals": true
+								},
+								{
+									"key": "page",
+									"value": "0",
+									"equals": true
+								},
+								{
+									"key": "size",
+									"value": "50",
+									"equals": true
+								}
+							],
+							"variable": []
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{client_token}}"
+							},
+							{
+								"key": "Predix-Zone-Id",
+								"value": "{{traffic_zone_id}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get Asset Detail",
+					"request": {
+						"url": "{{metadataurl}}/assets/{{traffic_asset}}",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{client_token}}"
+							},
+							{
+								"key": "Predix-Zone-Id",
+								"value": "{{traffic_zone_id}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get Sub Assets",
+					"request": {
+						"url": "{{metadataurl}}/assets/{{node}}/subAssets",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{client_token}}"
+							},
+							{
+								"key": "Predix-Zone-Id",
+								"value": "{{traffic_zone_id}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get Location Detail",
+					"request": {
+						"url": "{{metadataurl}}/locations/{{traffic_loc}}",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{client_token}}"
+							},
+							{
+								"key": "Predix-Zone-Id",
+								"value": "{{traffic_zone_id}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get Asset-->Location list",
+					"request": {
+						"url": "{{metadataurl}}/assets/{{traffic_asset}}/locations",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{client_token}}"
+							},
+							{
+								"key": "Predix-Zone-Id",
+								"value": "{{traffic_zone_id}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get Location-->Asset list",
+					"request": {
+						"url": "{{metadataurl}}/locations/{{traffic_loc}}/assets",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{client_token}}"
+							},
+							{
+								"key": "Predix-Zone-Id",
+								"value": "{{traffic_zone_id}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Tokens",
+			"description": "",
+			"item": [
+				{
+					"name": "Get client Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var data = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"client_token\", data.access_token);"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": {
+							"raw": "{{UAAURL}}?grant_type=client_credentials",
+							"host": [
+								"{{UAAURL}}"
+							],
+							"query": [
+								{
+									"key": "grant_type",
+									"value": "client_credentials",
+									"equals": true,
+									"description": ""
+								}
+							],
+							"variable": []
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic aGFja2F0aG9uOkBoYWNrYXRob24=",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"description": "",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "ic.admin",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "admin",
+									"type": "text"
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
