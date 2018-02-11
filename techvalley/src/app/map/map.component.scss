@@ -5,8 +5,10 @@ div {
   section {
       position: absolute;
       width: 20vw;
-      height: 100%;
+      height: 80vh;
+      top: 20vh;
       margin: 0;
+
       overflow-x: hidden;
       overflow-y: auto;
       background-color: #FFF;
@@ -63,11 +65,11 @@ div {
   }
 
   agm-map {
-    height: 100%;
+    height: 80vh;
     width: 80vw;
     position: absolute;
     z-index: -1;
-    top: 200px;
+    top: 20vh;
     left: 20vw;
   }
 }
