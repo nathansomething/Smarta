@@ -1,27 +1,60 @@
-# Techvalley
+README
+-------------------------
+-------------------------
+-------------------------
+This file includes:
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.0.0-beta.32.3.
+1) Description of the Product
+2) Target Audience
+3) Expected Benefits
+4) Limitations and Further Development
 
-## Development server
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+-------------------------
+-----------------------------SMARTA--------------------------------
+-------------------- Smart Traffic Analytics v1-----------------------
+-------------------------------------------------------------------
+Designed by Nathan Goodman, Ilya Mayzus and Felippe Cronemberger
+February 11th, 2018.
+-------------------------------------------------------------------
+-------------------------------------------------------------------
+-------------------------------------------------------------------
 
-## Code scaffolding
+1) Description
+-----------
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive/pipe/service/class/module`.
+The application provides an analytical platform that fetches data collected by cameras in the city of Schenectady and displays data points longitudinally as graphs over time. Data can be displayed by different time periods(24 hours, week, month and year).
 
-## Build
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
+2) Audience
+-----------
 
-## Running unit tests
+The application targets city officials, public managers and policy-makers who are concerned with understanding patterns of mobility in urban life.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
-## Running end-to-end tests
+3) Expected benefits
+-----------
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-Before running the tests make sure you are serving the app via `ng serve`.
+Users can benefit from the information produced by the application in a variety of ways, including:
 
-## Further help
+ - Discovery of mobility patterns in cities.
+ - Support to public policy planning and design.
+ - Monitoring and assessment of policy interventions.
+ - Comparisson between patterns across different localities within the same region or different cities(contingent upon data availability).
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+
+4) Existing Limitations and Further development
+------------
+
+This program could be expanded by increasing the portifolio of metrics as well as the scope of data. A userfriendlier interface that allows for easier comparisson across regions could make interface more inviting.
+Algorithms used to retrieve data and load it is still time-consuming(~3 minutes) and could be improved.
+
+
+-------------------------------------------------------------------
+-------------------------------------------------------------------
+-------------------------------------------------------------------
+-------------------------------------------------------------------
+-------------------------------------------------------------------
+-------------------------------------------------------------------
+-------------------------------------------------------------------
+-------------------------------------------------------------------
+----------------------------------END------------------------------
