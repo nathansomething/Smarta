@@ -13,30 +13,30 @@ class SmartaSampleData(Resource):
 
 class SmartaDataForAssetId(Resource):
 
-    def get(self, userfriendly_id):
-        print("got id={}".format(userfriendly_id))
-        return get_sample_data.get_vehicle_counts_for_asset_id(userfriendly_id), {'Access-Control-Allow-Origin': '*'}
-    
     def get(self):
         args = request.args
         print("args={}".format(args))
         userfriendly_id = args['id']
-        to_date = args['to_date']
+        to_date = args.get('to_date', None)
         if to_date is not None and (len(to_date.strip()) == 0 or (to_date ==  "''"))  :
-            to_date = None
-        aggregate_num_hours = args['aggregate_num_hours']
+            to_date = None        
+        aggregate_num_hours = args.get('aggregate_num_hours', None)
         if aggregate_num_hours is not None and (len(aggregate_num_hours.strip()) == 0 or (aggregate_num_hours ==  "''")):
             aggregate_num_hours = None
         else :
             aggregate_num_hours = int(aggregate_num_hours)
-        aggregate_num_days = args['aggregate_num_days']
+        aggregate_num_days = args.get('aggregate_num_days', None)
         if aggregate_num_days is not None and (len(aggregate_num_days.strip()) == 0 or (aggregate_num_days ==  "''")) :
             aggregate_num_days = None
         else :
             aggregate_num_days = int(aggregate_num_days)
-
-        return get_sample_data.get_vehicle_counts_for_asset_id(userfriendly_id, to_date, aggregate_num_hours, aggregate_num_days), {'Access-Control-Allow-Origin': '*'}
-
+            
+        if aggregate_num_hours >= 24 :
+            if aggregate_num_days is None or aggregate_num_days == 0 :
+                aggregate_num_days = 1
+                aggregate_num_hours = None
+        return get_sample_data.get_vehicle_counts_for_asset_id(userfriendly_id, to_date, aggregate_num_hours, aggregate_num_days), {'Access-Control-Allow-Origin': '*'}        
+    
     '''
     def get(self, userfriendly_id):
         print("got id={}".format(userfriendly_id))

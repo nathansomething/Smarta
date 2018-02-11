@@ -27,7 +27,7 @@ export class DetailComponent implements OnInit {
          enabled: false
        },
        series: [{
-         name: 'Days Ago',
+         name: 'Hours',
          data: []
        }],
        yAxis: {
@@ -48,11 +48,25 @@ export class DetailComponent implements OnInit {
     this.today = new Date();
     this.startdate = this.today.getFullYear() + '-' + this.pad(this.today.getMonth(), 2) + '-' + this.pad(this.today.getDate(), 2);
     this.enddate = this.today.getFullYear() + '-' + this.pad(this.today.getMonth(), 2) + '-' + this.pad(this.today.getDate(), 2);
-    this.getVehicalData()
+  }
+
+  getAggregateHours() {
+    switch(this.dataFrequency) {
+      case "Every Hour":
+        return 1;
+      case "Every Other Hour":
+        return 2;
+      case "Every 6 Hours":
+        return 6;
+      case "Every 12 Hours":
+        return 12;
+      case "Every 24 Hours":
+        return 24;
+    }
   }
 
   getVehicalData() {
-    this.http.get<Array<number> >(`http://127.0.0.1:5000/${this.id}`).subscribe(data => {
+    this.http.get<Array<number> >(`http://127.0.0.1:5000/aggr?id=${this.id}&to_date=%27%27&aggregate_num_hours=${this.getAggregateHours()}&aggregate_num_days=%27%27`).subscribe(data => {
       this.vehicalData = data
       for(let vehicalDatum of this.vehicalData) {
         this.chart.addPoint(vehicalDatum);
@@ -63,6 +77,7 @@ export class DetailComponent implements OnInit {
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.id = +params['id'];
+      this.getVehicalData();
     });
   }
 }
