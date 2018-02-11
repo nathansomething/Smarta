@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Chart } from 'angular-highcharts';
 import { HttpClient, HttpHeaders, HttpClientModule } from '@angular/common/http';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-detail',
@@ -16,25 +17,46 @@ export class DetailComponent implements OnInit {
   private enddate:string
   private today:Date;
   private vehicalData:Array<number> = [];
+  private xAxisArray:Array<number> = [];
   private chart:Chart = new Chart({
-       chart: {
-         type: 'line'
-       },
+     chart: {
+       type: 'line'
+     },
+     title: {
+       text: 'Traffic Over Time'
+     },
+     credits: {
+       enabled: false
+     },
+     series: [{
+       name: 'Cars',
+       data: this.vehicalData
+     }],
+     yAxis: {
        title: {
-         text: 'Traffic Over Time'
-       },
-       credits: {
-         enabled: false
-       },
-       series: [{
-         name: 'Hours',
-         data: []
-       }],
-       yAxis: {
-         title: {
-           text: 'Number of Cars'
+         text: 'Number of Cars',
+         style: {
+             fontSize:'25px',
+             fontFamily:'Jura'
          }
-       }
+       },
+     },
+     xAxis: {
+       title: {
+         text: 'Time',
+         style: {
+             fontSize:'25px',
+             fontFamily:'Jura'
+         }
+       },
+       tickPositions: this.xAxisArray
+     },
+     tooltip: {
+      backgroundColor: '#7878c9',
+      borderColor: '#333',
+      borderRadius: 10,
+      borderWidth: 1
+    }
  });
 
   pad(num:number, size:number): string {
@@ -47,7 +69,7 @@ export class DetailComponent implements OnInit {
     this.dataFrequency = "Every Hour"
     this.today = new Date();
     this.startdate = this.today.getFullYear() + '-' + this.pad(this.today.getMonth(), 2) + '-' + this.pad(this.today.getDate(), 2);
-    this.enddate = this.today.getFullYear() + '-' + this.pad(this.today.getMonth(), 2) + '-' + this.pad(this.today.getDate(), 2);
+    this.enddate = this.today.getFullYear() + '-' + this.pad(this.today.getMonth(), 2) + '-' + this.pad(this.today.getDate() - 1, 2);
   }
 
   updateDataFrequency(frequency:string) {
@@ -75,8 +97,11 @@ export class DetailComponent implements OnInit {
     let today = new Date();
     // Yes, this will break if it overlaps a month.
     // No, I don't have time to properly fix it.
-    let startDaysAgo = today.getDay() - Number(this.startdate.split('-')[2]);
-    let endDaysAgo = today.getDay() - Number(this.enddate.split('-')[2]);
+    let startDaysAgo = today.getDate() - Number(this.startdate.split('-')[2]);
+    let endDaysAgo = today.getDate() - Number(this.enddate.split('-')[2]);
+    let numDays = endDaysAgo - startDaysAgo;
+
+    this.xAxisArray = Array.apply(null, {length: (24 / this.getAggregateHours()) * numDays}).map(Number.call, Number);
 
     this.http.get<number[]>(`http://127.0.0.1:5000/aggr?id=${this.id}&start_days_ago=${startDaysAgo}&end_days_ago=${endDaysAgo}&aggregate_num_hours=${this.getAggregateHours()}`).subscribe(data => {
       this.vehicalData = data

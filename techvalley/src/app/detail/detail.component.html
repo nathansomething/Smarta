@@ -8,9 +8,9 @@
           <div class="input-group-text">Start Date</div>
         </div>
         <input class="form-control" [placeholder]="startdate"
-               name="dp" [(ngModel)]="startdate" ngbDatepicker #d1="ngbDatepicker">
+               name="dp" [(ngModel)]="startdate" ngbDatepicker #startDate="ngbDatepicker">
         <div class="input-group-append">
-          <button class="btn btn-outline-secondary" (click)="d1.toggle()" type="button">
+          <button class="btn btn-outline-secondary" (click)="startDate.toggle(); getVehicalData()" type="button">
             <i class="material-icons">event</i>
           </button>
         </div>
@@ -22,9 +22,9 @@
           <div class="input-group-text">End Date</div>
         </div>
         <input class="form-control" [placeholder]="enddate"
-               name="dp" [(ngModel)]="enddate" ngbDatepicker #d2="ngbDatepicker">
+               name="dp" [(ngModel)]="enddate" ngbDatepicker #endDate="ngbDatepicker">
         <div class="input-group-append">
-          <button class="btn btn-outline-secondary" (click)="d2.toggle()" type="button">
+          <button class="btn btn-outline-secondary" (click)="endDate.toggle();getVehicalData()" type="button">
             <i class="material-icons">event</i>
           </button>
         </div>
