@@ -1,6 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 
- @import url('https://fonts.googleapis.com/css?family=Jura|Lato');
+@import url('https://fonts.googleapis.com/css?family=Jura:400,700|Lato:400,700|Indie+Flower|Material+Icons');
+@import url('https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css');
 
 html {
   margin: 0;
@@ -10,4 +11,19 @@ html {
 body {
   margin: 0;
   padding: 0;
+  font-family: 'Lato';
+}
+
+a, a:visited, a:active {
+  color: #7878c9;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+button.btn.btn-primary {
+  background-color: #7878c9;
+  border-color: #505088
 }

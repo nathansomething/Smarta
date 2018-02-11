@@ -9,6 +9,8 @@ import { MapComponent } from './map/map.component';
 import { DetailComponent } from './detail/detail.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { AgmCoreModule } from '@agm/core';
+import { ChartModule } from 'angular-highcharts';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 const appRoutes: Routes = [
   { path: '', component: AboutComponent },
@@ -33,6 +35,8 @@ const appRoutes: Routes = [
     AgmCoreModule.forRoot({
       apiKey: ' AIzaSyBVuKP2hYQXrJx0m5LEZ4aQOZYl8PxccUM'
     }),
+    NgbModule.forRoot(),
+    ChartModule,
     BrowserModule,
     FormsModule,
     HttpModule

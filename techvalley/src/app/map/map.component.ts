@@ -24,4 +24,9 @@ export class MapComponent implements OnInit {
     this.router.navigate([`/detail/${this.detail_id}`]);
   }
 
+  setHeight() {
+    console.log(window.screen.height - 200 + 'px');
+    return window.screen.height - 200 + 'px';
+  }
+
 }

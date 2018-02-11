@@ -1,3 +1,29 @@
-div {
-  margin: 0 20%;
+div#container {
+  margin: 25px 20%;
+}
+
+h3 {
+  font-size: 24px;
+  font-family: 'Jura';
+  text-align: center;
+}
+
+button {
+  font-size: 20px;
+  font-family: 'Jura';
+  font-weight: bold;
+}
+
+div.input-group-text {
+  font-family: 'Jura';
+  font-weight: bold;
+}
+
+div.form-group {
+  margin: 10px;
+}
+
+input.form-control {
+  font-family: 'Lato';
+  font-size: 18px;
 }

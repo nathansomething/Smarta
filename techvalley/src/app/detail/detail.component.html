@@ -1,3 +1,51 @@
-<div>
-  <p>Viewing Detail Number {{id}}.</p>
+<div id="container">
+  <h3>Viewing data for site #{{id}}. <a routerLink="/map">Return to the map</a> to view more data points.</h3>
+  <div [chart]="chart"></div>
+  <form class="form-inline">
+    <div class="form-group">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <div class="input-group-text">Start Date</div>
+        </div>
+        <input class="form-control" placeholder="yyyy-mm-dd"
+               name="dp" [(ngModel)]="startdate" ngbDatepicker #d1="ngbDatepicker">
+        <div class="input-group-append">
+          <button class="btn btn-outline-secondary" (click)="d1.toggle()" type="button">
+            <i class="material-icons">event</i>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <div class="input-group-text">End Date</div>
+        </div>
+        <input class="form-control" placeholder="yyyy-mm-dd"
+               name="dp" [(ngModel)]="enddate" ngbDatepicker #d2="ngbDatepicker">
+        <div class="input-group-append">
+          <button class="btn btn-outline-secondary" (click)="d2.toggle()" type="button">
+            <i class="material-icons">event</i>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <div class="input-group-text">Data Frequency</div>
+        </div>
+        <div ngbDropdown class="d-inline-block">
+          <button class="btn btn-outline-primary" id="data_frequency" ngbDropdownToggle>{{this.dataFrequency}}</button>
+          <div ngbDropdownMenu aria-labelledby="data_frequency">
+            <button class="dropdown-item" (click)="this.dataFrequency='Every Hour'">Every Hour</button>
+            <button class="dropdown-item" (click)="this.dataFrequency='Every Other Hour'">Every Other Hour</button>
+            <button class="dropdown-item" (click)="this.dataFrequency='Every 6 Hours'">Every 6 Hours</button>
+            <button class="dropdown-item" (click)="this.dataFrequency='Every 12 Hours'">Every 12 Hours</button>
+            <button class="dropdown-item" (click)="this.dataFrequency='Every 24 Hours'">Every 24 Hours</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
 </div>

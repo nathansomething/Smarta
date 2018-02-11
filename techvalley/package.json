@@ -21,8 +21,11 @@
     "@angular/platform-browser": "^5.2.4",
     "@angular/platform-browser-dynamic": "^5.2.4",
     "@angular/router": "^5.2.4",
+    "@ng-bootstrap/ng-bootstrap": "^1.0.0",
     "@types/plotly.js": "^1.28.10",
+    "angular-highcharts": "^5.2.8",
     "core-js": "^2.5.3",
+    "highcharts": "^6.0.6",
     "plotly.js": "^1.33.1",
     "rxjs": "^5.5.6",
     "zone.js": "^0.8.20"
@@ -30,6 +33,7 @@
   "devDependencies": {
     "@angular/cli": "1.6.8",
     "@angular/compiler-cli": "^5.2.4",
+    "@types/highcharts": "^5.0.16",
     "@types/jasmine": "2.8.6",
     "@types/node": "~9.4.5",
     "codelyzer": "~4.1.0",
@@ -38,12 +42,12 @@
     "karma": "~2.0.0",
     "karma-chrome-launcher": "~2.2.0",
     "karma-cli": "~1.0.1",
+    "karma-coverage-istanbul-reporter": "^1.4.1",
     "karma-jasmine": "~1.1.1",
     "karma-jasmine-html-reporter": "^0.2.2",
-    "karma-coverage-istanbul-reporter": "^1.4.1",
     "protractor": "~5.3.0",
     "ts-node": "~4.1.0",
     "tslint": "~5.9.1",
-    "typescript": "~2.7.1"
+    "typescript": "^2.6.2"
   }
 }

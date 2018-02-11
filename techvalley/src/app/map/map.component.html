@@ -17,7 +17,7 @@
   <div id="map_header">
     <h2>Click on a Datapoint Below</h2>
   </div>
-  <agm-map [latitude]="lat" [longitude]="lng" (mapClick)="mapClicked($event)">
+  <agm-map [latitude]="lat" [longitude]="lng" [style.height]="setHeight()" (mapClick)="mapClicked($event)">
     <agm-marker [latitude]="lat" [longitude]="lng" (markerClick)="markerClicked($event)">
     </agm-marker>
     <!-- <agm-circle [latitude]="lat + 0.3" [longitude]="lng" [radius]="5000" [fillColor]="'red'"

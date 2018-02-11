@@ -47,7 +47,7 @@ div {
   div#map_header {
     position: absolute;
     left: 45vw;
-    top: 12vh;
+    top: 220px;
 
     h2 {
       z-index: 1;
@@ -63,11 +63,11 @@ div {
   }
 
   agm-map {
-    height: 100vh;
+    height: 100%;
     width: 80vw;
-    position: fixed;
+    position: absolute;
     z-index: -1;
-    top: 0;
+    top: 200px;
     left: 20vw;
   }
 }
